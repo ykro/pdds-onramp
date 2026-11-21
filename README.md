@@ -10,6 +10,10 @@ Los cinco badges arrancan en rojo a propósito. Este repositorio está hecho par
 
 ![Mapa de Tiendita](docs/diagrams/tiendita-overview.svg)
 
+Así se ve el catálogo de Tiendita al terminar (hay más capturas en el [Paso 5](steps/05-react-deploy/README.md#referencia-visual)).
+
+![Vista de catálogo y carrito](docs/screenshots/02-catalog.png)
+
 ## Los 5 pasos (independientes)
 
 | Paso | Enfoque | Guía |
