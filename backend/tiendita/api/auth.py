@@ -27,7 +27,21 @@ def verify_jwt_token(
     audience: str | None = None,
 ) -> dict[str, Any]:
     """Verify JWT signature, expiration, issuer, and audience against JWKS."""
-    raise NotImplementedError("TODO: verifica la firma, exp, iss y aud del JWT contra JWKS")
+    client = get_jwk_client(jwks_url)
+    signing_key = client.get_signing_key_from_jwt(token)
+    decode_kwargs: dict[str, Any] = {
+        "algorithms": ALLOWED_ALGORITHMS,
+        "options": {"require": ["sub", "exp"]},
+    }
+    if issuer:
+        decode_kwargs["issuer"] = issuer
+    if audience:
+        decode_kwargs["audience"] = audience
+    else:
+        decode_kwargs["options"]["verify_aud"] = False
+
+    payload = jwt.decode(token, signing_key.key, **decode_kwargs)
+    return dict(payload)
 
 
 def get_current_user_id(

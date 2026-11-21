@@ -2,9 +2,8 @@
 
 ## Historia de usuario
 
-TODO. Escribe aquí la historia con formato Como / Quiero / Para.
+TODO: escribe aquí la historia con formato Como / Quiero / Para.
 
 ## Criterios de aceptación
 
-1. TODO. Agrega al menos dos criterios con formato Dado / Cuando / Entonces.
-
+1. TODO: agrega al menos dos criterios con formato Dado / Cuando / Entonces.

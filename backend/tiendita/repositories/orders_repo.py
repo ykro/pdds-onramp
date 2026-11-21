@@ -1,4 +1,4 @@
-"""PostgreSQL repository for products, orders, transactions, and idempotency."""
+"""PostgreSQL repository for products and orders."""
 
 from __future__ import annotations
 
@@ -28,34 +28,9 @@ def get_connection(dsn: str | None = None) -> psycopg.Connection[Any]:
     return psycopg.connect(url, row_factory=dict_row, prepare_threshold=None)
 
 
-def place_order(
-    conn: psycopg.Connection[Any],
-    user_id: str,
-    sku: str,
-    quantity: int,
-    idempotency_key: str | None = None,
-) -> OrderSummary:
-    """Atomically lock stock with SELECT ... FOR UPDATE, deduct inventory, and create an order."""
-    if quantity <= 0:
-        raise ValueError("quantity must be positive")
-
-    raise NotImplementedError("TODO: implementa place_order con SELECT ... FOR UPDATE")
-
-
-def place_order_idempotent(
-    conn: psycopg.Connection[Any],
-    user_id: str,
-    sku: str,
-    quantity: int,
-    idempotency_key: str | None = None,
-) -> OrderSummary:
-    """Wrapper that handles concurrent UniqueViolation on idempotency_key cleanly."""
-    raise NotImplementedError("TODO (extendido): maneja UniqueViolation para idempotencia")
-
-
 def find_orders_by_sku(conn: psycopg.Connection[Any], sku: str) -> list[dict[str, Any]]:
     """Return active (non-cancelled) orders containing sku using a parameterized query."""
-    # BUG del PR a revisar: concatena SQL y no filtra pedidos cancelados
+    # BUG (CA-3.3): concatena SQL (vulnerable a inyección SQL) y no filtra pedidos cancelados.
     with conn.cursor() as cur:
         cur.execute(
             f"SELECT o.id, o.user_id, o.status, o.total_cents FROM orders o "
@@ -78,17 +53,61 @@ class PostgresStoreRepository:
             )
             return list(cur.fetchall())
 
-    def create_order(
-        self,
-        user_id: str,
-        sku: str,
-        quantity: int,
-        idempotency_key: str | None = None,
-    ) -> OrderSummary:
-        with get_connection(self._dsn) as conn:
-            return place_order_idempotent(
-                conn, user_id, sku, quantity, idempotency_key=idempotency_key
+    def get_product_by_sku(self, sku: str) -> dict[str, Any] | None:
+        with get_connection(self._dsn) as conn, conn.cursor() as cur:
+            cur.execute(
+                "SELECT id, sku, name, category, price_cents, stock FROM products WHERE sku = %s",
+                (sku,),
             )
+            row = cur.fetchone()
+            return dict(row) if row is not None else None
+
+    def create_order(self, user_id: str, sku: str, quantity: int) -> OrderSummary:
+        if quantity <= 0:
+            raise ValueError("quantity must be positive")
+        with get_connection(self._dsn) as conn:
+            with conn.transaction(), conn.cursor() as cur:
+                cur.execute(
+                    "SELECT id, price_cents, stock FROM products WHERE sku = %s FOR UPDATE",
+                    (sku,),
+                )
+                product = cur.fetchone()
+                if product is None:
+                    raise KeyError(f"Unknown SKU: {sku}")
+                if int(product["stock"]) < quantity:
+                    raise OutOfStockError(
+                        f"SKU {sku}: requested {quantity}, available {product['stock']}"
+                    )
+
+                total_cents = int(product["price_cents"]) * quantity
+                cur.execute(
+                    "UPDATE products SET stock = stock - %s WHERE id = %s",
+                    (quantity, product["id"]),
+                )
+                cur.execute(
+                    """
+                    INSERT INTO orders (user_id, status, total_cents)
+                    VALUES (%s, 'pending', %s)
+                    RETURNING id, user_id, status, total_cents
+                    """,
+                    (user_id, total_cents),
+                )
+                order_row = cur.fetchone()
+                assert order_row is not None
+                order_id = int(order_row["id"])
+                cur.execute(
+                    """
+                    INSERT INTO order_items (order_id, product_id, quantity, unit_price_cents)
+                    VALUES (%s, %s, %s, %s)
+                    """,
+                    (order_id, product["id"], quantity, int(product["price_cents"])),
+                )
+                return OrderSummary(
+                    id=order_id,
+                    user_id=str(order_row["user_id"]),
+                    status=str(order_row["status"]),
+                    total_cents=int(order_row["total_cents"]),
+                )
 
     def list_orders_for_user(self, user_id: str) -> list[dict[str, Any]]:
         with get_connection(self._dsn) as conn, conn.cursor() as cur:
@@ -102,25 +121,3 @@ class PostgresStoreRepository:
                 (user_id,),
             )
             return list(cur.fetchall())
-
-    def is_admin(self, user_id: str) -> bool:
-        with get_connection(self._dsn) as conn, conn.cursor() as cur:
-            cur.execute("SELECT 1 FROM admins WHERE user_id = %s", (user_id,))
-            return cur.fetchone() is not None
-
-    def restock_product(self, sku: str, delta: int) -> dict[str, Any]:
-        with get_connection(self._dsn) as conn:
-            with conn.transaction(), conn.cursor() as cur:
-                cur.execute(
-                    """
-                    UPDATE products
-                    SET stock = stock + %s
-                    WHERE sku = %s
-                    RETURNING sku, name, category, price_cents, stock
-                    """,
-                    (delta, sku),
-                )
-                row = cur.fetchone()
-                if row is None:
-                    raise KeyError(f"Unknown SKU: {sku}")
-                return dict(row)
