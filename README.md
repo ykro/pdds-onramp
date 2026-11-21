@@ -28,7 +28,10 @@ Este repositorio es un **onramp** práctico y autoevaluable para preparar tu ent
 4. Verifica tu entorno con `make doctor` y elige el paso por donde quieras empezar.
 5. Revisa tu avance en cualquier momento con `make progress` o valida un paso con `make check STEP=N`.
 
-Si algún término de ingeniería resulta nuevo, consulta el [glosario](docs/glosario.md) y las rúbricas comentadas en [examples/](examples/). Para dudas o compartir avances, usa la pestaña **Discussions** de este repositorio.
+Si algún término de ingeniería resulta nuevo, consulta el [glosario](docs/glosario.md) y las rúbricas comentadas en [examples/](examples/). Para dudas o compartir avances, usa la pestaña **Discussions** en [ykro/pdds-onramp](https://github.com/ykro/pdds-onramp/discussions).
+
+Si quieres comparar tu trabajo, ver las capturas de pantalla de cómo debería verse la aplicación o revisar los archivos de solución por problema, consulta el [repositorio de soluciones de referencia](https://github.com/ykro/pdds-onramp-solutions).
+
 
 ## Licencia
 

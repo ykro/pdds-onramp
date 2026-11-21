@@ -50,30 +50,7 @@ def place_order_idempotent(
     idempotency_key: str | None = None,
 ) -> OrderSummary:
     """Wrapper that handles concurrent UniqueViolation on idempotency_key cleanly."""
-    try:
-        return place_order(conn, user_id, sku, quantity, idempotency_key=idempotency_key)
-    except psycopg.errors.UniqueViolation:
-        if not idempotency_key:
-            raise
-        with conn.cursor() as cur:
-            cur.execute(
-                """
-                SELECT o.id, o.user_id, o.status, o.total_cents
-                FROM idempotency_keys ik
-                JOIN orders o ON o.id = ik.order_id
-                WHERE ik.key = %s
-                """,
-                (idempotency_key,),
-            )
-            existing = cur.fetchone()
-            if existing is None:
-                raise
-            return OrderSummary(
-                id=int(existing["id"]),
-                user_id=str(existing["user_id"]),
-                status=str(existing["status"]),
-                total_cents=int(existing["total_cents"]),
-            )
+    raise NotImplementedError("TODO (extendido): maneja UniqueViolation para idempotencia")
 
 
 def find_orders_by_sku(conn: psycopg.Connection[Any], sku: str) -> list[dict[str, Any]]:
