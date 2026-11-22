@@ -35,8 +35,7 @@ def round_half_up_percent(amount_cents: int, percent: int) -> int:
     """Compute round_half_up(amount_cents * percent / 100) using integer arithmetic only."""
     if amount_cents < 0 or percent < 0:
         raise ValueError("amount_cents and percent must be non-negative")
-    # BUG (CA-2.1): usar round() con float aplica redondeo bancario (round half to even)
-    # y devuelve 10 en lugar de 11 para 10% de 105.
+    # Síntoma (CA-2.1): el 10 % de 105 centavos devuelve 10 y el negocio espera 11.
     return int(round(amount_cents * (percent / 100.0)))
 
 
@@ -59,6 +58,6 @@ def calculate_order_total(items: list[CartItem], coupon: Coupon | None = None) -
         if not 0 <= coupon.percent_off <= 100:
             raise ValueError(f"Invalid coupon percent: {coupon.percent_off}")
         discount = round_half_up_percent(subtotal, coupon.percent_off)
-        # BUG (CA-2.1): falta respetar coupon.max_discount_cents cuando no es None.
+        # Síntoma (CA-2.1): un cupón con tope a veces descuenta más que su tope.
 
     return max(0, subtotal - discount)

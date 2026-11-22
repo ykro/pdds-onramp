@@ -30,7 +30,7 @@ def get_connection(dsn: str | None = None) -> psycopg.Connection[Any]:
 
 def find_orders_by_sku(conn: psycopg.Connection[Any], sku: str) -> list[dict[str, Any]]:
     """Return active (non-cancelled) orders containing sku using a parameterized query."""
-    # BUG (CA-3.3): concatena SQL (vulnerable a inyección SQL) y no filtra pedidos cancelados.
+    # Síntoma (CA-3.3): devuelve pedidos que el negocio ya no cuenta, y con ' OR '1'='1 devuelve de más.
     with conn.cursor() as cur:
         cur.execute(
             f"SELECT o.id, o.user_id, o.status, o.total_cents FROM orders o "

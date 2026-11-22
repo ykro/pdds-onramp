@@ -2,6 +2,8 @@
 
 ![Dónde estás](diagrams/where.svg)
 
+Este paso toma unos 75 minutos.
+
 ## Antes de empezar
 
 1. ¿Qué integridad garantiza una llave foránea junto con un constraint `CHECK` en PostgreSQL frente a validar solo en Python? (Pista, revisa `db/migrations/001_init.sql` y `diagrams/db-schema.svg`.)
@@ -10,12 +12,12 @@
 
 ## Por qué importa
 
-Toda aplicación de negocio depende de un esquema relacional sano y de consultas seguras que respondan con datos correctos. Conocer cómo organiza y ejecuta consultas una base de datos según [CMU 15-445](https://15445.courses.cs.cmu.edu/) y la [documentación oficial de PostgreSQL](https://www.postgresql.org/docs/current/) te permite detectar riesgos de seguridad y cuello de botella en revisiones técnicas. Complementar esa base con *Designing Data-Intensive Applications* (Kleppmann) y [Use The Index, Luke](https://use-the-index-luke.com/) da criterio sólido al auditar datos en producción.
+Toda aplicación de negocio depende de un esquema relacional sano y de consultas seguras que respondan con datos correctos. Conocer cómo organiza y ejecuta consultas una base de datos según [CMU 15-445](https://15445.courses.cs.cmu.edu/) y la [documentación oficial de PostgreSQL](https://www.postgresql.org/docs/current/) te permite detectar riesgos de seguridad y cuellos de botella en revisiones técnicas. Complementar esa base con *Designing Data-Intensive Applications* (Kleppmann) y [Use The Index, Luke](https://use-the-index-luke.com/) da criterio sólido al auditar datos en producción.
 
 ## Qué vas a hacer
 
 - **Leer**. Levanta PostgreSQL local con `make db-up` y revisa el esquema ya listo en `db/migrations/001_init.sql`, el diagrama `diagrams/db-schema.svg` y los ejemplos de joins y agrupaciones en [example/guided_joins_and_groupby.sql](example/guided_joins_and_groupby.sql).
-- **Debuguear**. Corrige `find_orders_by_sku()` en `backend/tiendita/repositories/orders_repo.py` para reemplazar la interpolación directa por parámetros `%s` contra inyección SQL y excluir pedidos con estado `cancelled`.
+- **Debuguear**. Llama a `find_orders_by_sku()` de `backend/tiendita/repositories/orders_repo.py` con `SKU-001` y con el texto `' OR '1'='1`. En el primer caso aparecen pedidos que el negocio ya no cuenta; en el segundo, pedidos de todos los productos. Explica por qué pasa cada cosa antes de corregirla.
 - **Escribir**. Completa las consultas analíticas en `db/queries/monthly_sales.sql` y `db/queries/top_products.sql` sobre las tablas reales del esquema.
 
 ![Esquema de base de datos](diagrams/db-schema.svg)

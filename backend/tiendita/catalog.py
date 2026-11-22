@@ -76,5 +76,5 @@ def _normalize_text(value: str) -> str:
 
 def search_by_name(products: list[ProductRecord], query: str) -> list[ProductRecord]:
     """Find products matching query ignoring case, accents, and extra whitespace."""
-    # BUG (CA-2.2): falla con mayúsculas, tildes o espacios extra. Usa _normalize_text().
+    # Síntoma (CA-2.2): "  pantalón   chino " no encuentra el producto "Pantalón Chino".
     return [p for p in products if query in p.name]

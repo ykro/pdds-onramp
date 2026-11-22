@@ -34,5 +34,5 @@ class StoreService:
 
     def get_my_orders(self, user_id: str) -> list[dict[str, Any]]:
         """Authorization rule: return only orders belonging to user_id."""
-        # BUG (CA-4.1): devuelve todos los pedidos sin verificar que pertenezcan a user_id.
+        # Síntoma (CA-4.1): en algunos casos Ana podría ver pedidos que no son suyos.
         return self._repo.list_orders_for_user(user_id)

@@ -6,6 +6,8 @@ export interface CartItem {
   quantity: number;
 }
 
+export const FREE_SHIPPING_CENTS = 30000;
+
 export function formatQuetzales(cents: number): string {
   const safe = Math.max(0, Math.round(cents));
   return `Q ${(safe / 100).toFixed(2)}`;
@@ -52,7 +54,7 @@ export function useCart() {
   }, []);
 
   const totalCents = useMemo(() => {
-    // BUG (CA-5.2): falta multiplicar price_cents por item.quantity.
+    // Síntoma (CA-5.2): con tres unidades del mismo producto, el total no cuadra.
     return items.reduce((sum, item) => sum + item.product.price_cents, 0);
   }, [items]);
 
@@ -61,10 +63,15 @@ export function useCart() {
     [items],
   );
 
+  // TODO (CA-5.3): hoy siempre vale 0. Debe decir cuántos centavos faltan para llegar a
+  // FREE_SHIPPING_CENTS, y nunca un número negativo.
+  const freeShippingRemainingCents = 0;
+
   return {
     items,
     itemCount,
     totalCents,
+    freeShippingRemainingCents,
     formattedTotal: formatQuetzales(totalCents),
     addItem,
     removeItem,

@@ -6,7 +6,7 @@
 [![Paso 4](https://github.com/ykro/pdds-onramp/actions/workflows/step-4.yml/badge.svg)](https://github.com/ykro/pdds-onramp/actions/workflows/step-4.yml)
 [![Paso 5](https://github.com/ykro/pdds-onramp/actions/workflows/step-5.yml/badge.svg)](https://github.com/ykro/pdds-onramp/actions/workflows/step-5.yml)
 
-Los cinco badges arrancan en rojo a propósito. Este repositorio está hecho para ayudarte a preparar tu entrada al Postgrado en Diseño y Desarrollo de Software (PDDS) de Universidad Galileo, pasando cada paso a verde a tu ritmo. Todo gira alrededor de un solo proyecto, **Tiendita**, pero cada uno de los cinco pasos se puede trabajar de forma independiente y combina lectura de código ajeno, debugging y un cambio pequeño.
+Los cinco badges arrancan en rojo a propósito. Este repositorio está hecho para ayudarte a preparar tu entrada al Posgrado en Diseño y Desarrollo de Software (PDDS) de Universidad Galileo, pasando cada paso a verde a tu ritmo. Todo gira alrededor de un solo proyecto, **Tiendita**, pero cada uno de los cinco pasos se puede trabajar de forma independiente y combina lectura de código ajeno, debugging y un cambio pequeño.
 
 ![Mapa de Tiendita](docs/diagrams/tiendita-overview.svg)
 
