@@ -22,13 +22,14 @@ Los bugs más caros en producción suelen vivir en reglas de negocio pequeñas y
 
 - `CA-2.1` `backend/tiendita/pricing.py` calcula centavos exactos con `int`, aplica redondeo half-up, respeta `max_discount_cents` y lanza `OutOfStockError` cuando falta inventario.
 - `CA-2.2` `backend/tiendita/catalog.py` carga `data/products.csv` y encuentra `"  pantalón   chino "` mediante `search_by_name`.
-- `CA-2.3` `backend/tests/step2/test_student_pricing.py` contiene al menos tres funciones de prueba reales que pasan en `pytest`.
+- `CA-2.3` `backend/tests/step2/test_student_pricing.py` contiene al menos tres tests que pasan con tu código, y cada una de las tres versiones con un bug (redondeo con `float`, cupón sin tope y venta sin revisar inventario) pone al menos uno de ellos en rojo.
 
 ## Al terminar
 
-1. ¿Por qué calcular precios con números de punto flotante (`float`) genera errores silenciosos en una tienda en línea? (Pista, revisa `backend/tiendita/pricing.py` y `example/discount_example.py`.)
-2. ¿Cómo cambia el tiempo de respuesta de una búsqueda lineal frente a un diccionario cuando el catálogo crece de 1,000 a 100,000 productos? (Pista, ejecuta `make bench` y lee `backend/tiendita/search.py`.)
-3. ¿Qué ventaja da escribir pruebas automatizadas sobre casos borde de negocio antes de tocar una base de datos o un servidor web? (Pista, revisa `backend/tests/step2/test_student_pricing.py`.)
+1. Un cupón de 50 % se aplica a un producto de 5 centavos. ¿Cuánto descuento da tu `round_half_up_percent` y cuánto daba la versión con `float` y `round()`?
+2. Si el catálogo llega a un millón de productos, ¿qué esperas de la búsqueda lineal frente al diccionario según lo que mediste con `make bench`? ¿En qué caso la búsqueda lineal sigue siendo necesaria?
+3. `make check STEP=2` corre tus tests contra versiones con un bug. Si una de esas versiones queda en verde, ¿qué te dice de tus tests?
+4. Explica en tres líneas, con tus palabras, qué cambiaste y por qué. Si no puedes, vuelve a la pista 1 antes de seguir.
 
 ## Cómo verificar
 

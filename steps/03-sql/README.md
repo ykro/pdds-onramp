@@ -28,9 +28,10 @@ Toda aplicación de negocio depende de un esquema relacional sano y de consultas
 
 ## Al terminar
 
-1. ¿Qué integridad garantiza una llave foránea junto con un constraint `CHECK` en PostgreSQL frente a validar solo en Python? (Pista, revisa `db/migrations/001_init.sql` y `diagrams/db-schema.svg`.)
-2. ¿Por qué concatenar entrada del usuario en un f-string de SQL abre una vulnerabilidad de inyección SQL y cómo la bloquean los parámetros `%s`? (Pista, revisa `find_orders_by_sku()` en `backend/tiendita/repositories/orders_repo.py`.)
-3. ¿Por qué conviene excluir pedidos cancelados dentro de las consultas de reportes en lugar de filtrar en memoria después? (Pista, revisa `example/guided_joins_and_groupby.sql`.)
+1. Un pedido de marzo pasa de `paid` a `cancelled`. ¿Qué número cambia en tu reporte mensual y por qué conviene que el filtro viva en el SQL?
+2. Un compañero propone quitar las comillas de la entrada en Python en lugar de usar `%s`. ¿Qué le responderías?
+3. `top_products` se vuelve lento cuando `order_items` llega a millones de filas. ¿Qué índice probarías y cómo comprobarías que PostgreSQL lo usa?
+4. Explica en tres líneas, con tus palabras, qué cambiaste y por qué. Si no puedes, vuelve a la pista 1 antes de seguir.
 
 ## Cómo verificar
 

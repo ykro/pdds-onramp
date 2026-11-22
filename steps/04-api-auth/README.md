@@ -30,9 +30,10 @@ En un sistema en producción, separar transporte HTTP, reglas de negocio y persi
 
 ## Al terminar
 
-1. ¿Por qué separar un backend en rutas HTTP, capa de servicio y repositorio simplifica probar reglas de negocio y seguridad? (Pista, revisa `diagrams/layers.svg` y `example/layered_endpoint_example.py`.)
-2. ¿Qué diferencia existe entre autenticar quién envió un token JWT y autorizar qué recursos puede consultar esa persona? (Pista, revisa `backend/tiendita/api/auth.py` y `backend/tiendita/services/store_service.py`.)
-3. ¿Qué debe devolver un endpoint REST cuando el recurso solicitado por identificador no existe y por qué conviene reflejarlo en OpenAPI? (Pista, revisa `backend/tiendita/api/app.py`.)
+1. `list_orders_for_user` ya filtra por `user_id` en el SQL. ¿Por qué conviene filtrar otra vez en el servicio?
+2. Ana pide `GET /api/orders/mine`. ¿Qué responde el API si su token venció hace un minuto, y qué responde si el token es válido pero Ana todavía no tiene pedidos?
+3. Quieres agregar `GET /api/products/{sku}/stock`. ¿Qué archivo tocas en cada capa y qué test escribirías primero?
+4. Explica en tres líneas, con tus palabras, qué cambiaste y por qué. Si no puedes, vuelve a la pista 1 antes de seguir.
 
 ## Cómo verificar
 
