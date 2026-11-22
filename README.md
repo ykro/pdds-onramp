@@ -36,7 +36,7 @@ Puedes usar asistentes de IA mientras trabajas este onramp, siempre que te ayude
 
 1. Haz clic en **Use this template** en GitHub para crear tu copia del repositorio.
 2. Abre la pestaña **Actions** en tu repositorio nuevo y ejecuta el workflow **Initialize Repo** (crea tus issues y actualiza los badges de arriba).
-3. Abre el repositorio en **GitHub Codespaces** o clónalo en local con Python 3.12, `uv` y Node 22.
+3. Abre el repositorio en **GitHub Codespaces** o clónalo en local con Python 3.12, `uv` y Node 22. En local, los Pasos 3 y 4 también necesitan [Docker Desktop](https://www.docker.com/products/docker-desktop/) para levantar PostgreSQL; Codespaces ya lo trae.
 4. Verifica tu entorno con `make doctor` y elige el paso por donde quieras empezar.
 5. Revisa tu avance en cualquier momento con `make progress` o valida un paso con `make check STEP=N`.
 
