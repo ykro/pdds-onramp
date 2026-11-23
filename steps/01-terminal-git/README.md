@@ -29,7 +29,7 @@ En el posgrado entregarás cada proyecto en un Pull Request, y el CI decidirá s
 
 - **Leer**. Inspecciona `scripts/log_report.sh` y las primeras líneas de `data/access.log` para entender el formato de columnas y cómo se encadenan `wc`, `awk`, `sort` y `uniq`. Si quieres repasar comandos básicos del shell, abre [example/intro-terminal.md](example/intro-terminal.md).
 - **Debuguear**. Crea una rama nueva y corre `./scripts/log_report.sh data/access.log`, luego `./scripts/log_report.sh` sin argumento y con un archivo que no existe. Compara `errors_5xx` con lo que cuentas a mano en el log, y lee el error que sale cuando falta el archivo: ¿le serviría a quien lo encuentra a las 3 a. m. en un job de CI? Corrige las dos fallas.
-- **Escribir**. Completa la historia de usuario en `docs/stories/001-order-history.md` usando el formato Como / Quiero / Para y al menos dos criterios Dado / Cuando / Entonces. Luego abre tu Pull Request y contrasta tu trabajo contra la guía de [examples/code-review.md](../../examples/code-review.md).
+- **Escribir**. Completa la historia de usuario en `docs/stories/001-order-history.md` usando el formato Como / Quiero / Para y al menos dos criterios Dado / Cuando / Entonces. Luego abre tu Pull Request siguiendo [examples/historia-y-pr.md](../../examples/historia-y-pr.md) y contrasta tu trabajo contra la guía de [examples/code-review.md](../../examples/code-review.md).
 
 ![Flujo Git](diagrams/git-flow.svg)
 

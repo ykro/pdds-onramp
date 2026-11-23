@@ -26,7 +26,7 @@ Si nunca escribiste SQL, abre primero [example/guided_joins_and_groupby.sql](exa
 
 ## Qué vas a hacer
 
-- **Leer**. Levanta PostgreSQL local con `make db-up` (en local necesitas Docker Desktop abierto; `make doctor` te dice si responde) y revisa el esquema ya listo en `db/migrations/001_init.sql`, el diagrama `diagrams/db-schema.svg` y los ejemplos de joins y agrupaciones en [example/guided_joins_and_groupby.sql](example/guided_joins_and_groupby.sql).
+- **Leer**. Levanta PostgreSQL local y carga los datos iniciales con `make db-up && make migrate` (en local necesitas Docker Desktop abierto; `make doctor` te dice si responde) y revisa el esquema ya listo en `db/migrations/001_init.sql`, el diagrama `diagrams/db-schema.svg` y los ejemplos de joins y agrupaciones en [example/guided_joins_and_groupby.sql](example/guided_joins_and_groupby.sql).
 - **Debuguear**. Abre `psql` con la primera línea (si no conecta, revisa usuario y base en `.env.example`). En otra terminal, abre Python con la segunda y escribe las otras tres:
 
   ```bash
@@ -45,7 +45,7 @@ Si nunca escribiste SQL, abre primero [example/guided_joins_and_groupby.sql](exa
 ## Criterios de aceptación
 
 - `CA-3.1` `db/queries/monthly_sales.sql` agrupa las ventas activas por mes (`YYYY-MM`) devolviendo conteo de órdenes e ingresos en centavos.
-- `CA-3.2` `db/queries/top_products.sql` devuelve los cinco productos más vendidos ordenados por unidades totales.
+- `CA-3.2` `db/queries/top_products.sql` devuelve los cinco productos más vendidos ordenados por unidades totales y desempatados por SKU (`ORDER BY units_sold DESC, p.sku ASC`).
 - `CA-3.3` `find_orders_by_sku()` pasa el SKU como parámetro y nunca dentro del texto SQL, bloquea el payload `' OR '1'='1` y excluye pedidos cancelados.
 
 ## Al terminar
@@ -56,4 +56,4 @@ Si nunca escribiste SQL, abre primero [example/guided_joins_and_groupby.sql](exa
 
 ## Cómo verificar
 
-Levanta la base de datos local con `make db-up` y ejecuta `make check STEP=3`. Antes de escribir tus consultas, revisa [example/guided_joins_and_groupby.sql](example/guided_joins_and_groupby.sql) o consulta la [primera pista](hints/1.md).
+Levanta la base de datos local y aplica las migraciones con `make db-up && make migrate`, luego ejecuta `make check STEP=3`. Antes de escribir tus consultas, revisa [example/guided_joins_and_groupby.sql](example/guided_joins_and_groupby.sql) o consulta la [primera pista](hints/1.md).

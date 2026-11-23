@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from tiendita import pricing
+# from tiendita import pricing  # descomenta al escribir tus pruebas
 
 
 def test_student_placeholder() -> None:

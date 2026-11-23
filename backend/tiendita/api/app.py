@@ -44,7 +44,8 @@ def list_products(service: StoreService = Depends(get_store_service)) -> list[di
     return service.get_catalog()
 
 
-# TODO (CA-4.2 y CA-4.3): agrega aquí la ruta @router.get("/products/{sku}") usando service.get_product(sku).
+# TODO (CA-4.2 y CA-4.3): agrega aquí @router.get("/products/{sku}")
+# usando service.get_product(sku).
 
 
 @router.post("/orders", response_model=OrderResponse, status_code=status.HTTP_201_CREATED)

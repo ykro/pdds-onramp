@@ -26,7 +26,7 @@ Así se ve el catálogo de Tiendita al terminar (hay más capturas en el [Paso 5
 
 ## Cómo usar asistentes de IA
 
-Puedes usar asistentes de IA mientras trabajas este onramp, siempre que te ayuden a aprender y no a saltarte el razonamiento.
+Puedes usar asistentes de IA mientras trabajas este onramp, siempre que te ayuden a aprender y no a saltarte el razonamiento. El repositorio incluye [AGENTS.md](AGENTS.md) para que cualquier agente compatible trabaje en modo tutor socrático y te guíe sin regalarte la solución.
 
 1. Úsalos para entender mensajes de error, comparar alternativas o destrabarte después de leer `hints/1.md`.
 2. Evita aceptar código que no puedas explicar con tus propias palabras.
@@ -36,7 +36,7 @@ Puedes usar asistentes de IA mientras trabajas este onramp, siempre que te ayude
 
 1. Haz clic en **Use this template** en GitHub para crear tu copia del repositorio.
 2. Abre la pestaña **Actions** en tu repositorio nuevo y ejecuta el workflow **Initialize Repo** (crea tus issues y actualiza los badges de arriba).
-3. Abre el repositorio en **GitHub Codespaces** o clónalo en local con Python 3.12, `uv` y Node 22. En local, los Pasos 3 y 5, y probar el API del Paso 4 en `/docs`, también necesitan [Docker Desktop](https://www.docker.com/products/docker-desktop/) para levantar PostgreSQL; Codespaces ya lo trae. En Windows usa Codespaces.
+3. Abre el repositorio en **GitHub Codespaces** o clónalo en local con Python 3.12, `uv` y Node 22. Si trabajas en local, instala dependencias una vez con `uv sync && (cd frontend && npm ci)`. Los Pasos 3 y 5, y probar el API del Paso 4 en `/docs`, también necesitan [Docker Desktop](https://www.docker.com/products/docker-desktop/) para levantar PostgreSQL; Codespaces ya lo trae. En Windows usa Codespaces.
 4. Verifica tu entorno con `make doctor` y elige el paso por donde quieras empezar.
 5. Revisa tu avance en cualquier momento con `make progress` o valida un paso con `make check STEP=N`.
 
